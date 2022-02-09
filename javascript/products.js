@@ -2,7 +2,7 @@ import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.26/vue
 
 let productModal = {};
 let delProductModal = {};
-let fileInput = document.querySelectorAll('input[type=file]');
+
 
 const app = createApp({
 
@@ -37,7 +37,7 @@ const app = createApp({
         getAllProducts() {
             axios.get(`${this.url}/api/${this.apiPath}/admin/products/all`)
                 .then(res => {
-                    console.log(res.data);
+                    // console.log(res.data);
                     this.products = res.data.products;
                 })
                 .catch(err => {
@@ -79,7 +79,6 @@ const app = createApp({
                 productUrl = `${this.url}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
                 methods = 'put'
             }
-
             axios[methods](productUrl, { data: this.tempProduct })
                 .then(res => {
                     // console.log(res.data);
@@ -87,7 +86,7 @@ const app = createApp({
                     productModal.hide();
                 })
                 .catch(err => {
-                    console.log(err.data);
+                    alert(err.data.message);
                 })
         },
         //刪除產品
@@ -101,11 +100,27 @@ const app = createApp({
                     console.log(err.data);
                 })
         },
+        //新增圖片
+        createImages() {
+            this.tempProduct.imagesUrl = [];
+            this.tempProduct.imagesUrl.push('');
+        },
         //上傳圖片
-        upload() {
-            console.dir(fileInput);
-            const file = fileInput.files[0];
-            console.log(file);
+        upload(index) {
+            let fileInput = document.querySelectorAll('input[type=file]');
+            // console.dir(fileInput);
+            const file = fileInput[index].files[0]
+            // console.log(file);
+            const formData = new FormData();
+            formData.append('file-to-upload', file);
+
+            axios.post(`${this.url}/api/${this.apiPath}/admin/upload`, formData)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log(err.response);
+                })
         }
     },
     //生命週期
@@ -123,6 +138,5 @@ const app = createApp({
         })
 
     },
-
 
 }).mount('#app');

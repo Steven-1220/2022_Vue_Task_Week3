@@ -124,7 +124,7 @@
                                         <!-- 上傳檔案 -->
                                         <div class="mb-3">
                                             <label for="formFile" class="form-label">選擇檔案</label>
-                                            <input class="form-control" type="file" @change="upload">
+                                            <input class="form-control" type="file" @change="upload(index)">
                                         </div>
                                         <!-- :src="tempProduct.imagesUrl[index]" 也可以寫成 :src="img" -->
                                         <img :src="tempProduct.imagesUrl[index]" alt="">
@@ -144,6 +144,11 @@
                                             刪除圖片
                                         </button>
                                     </div>
+                                </div>
+                                <div v-else>
+                                    <button class="btn btn-outline-primary btn-sm d-block w-100" @click="createImages">
+                                        新增圖片
+                                    </button>
                                 </div>
                             </div>
 
